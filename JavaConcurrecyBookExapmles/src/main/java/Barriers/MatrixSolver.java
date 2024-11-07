@@ -9,7 +9,8 @@ public class MatrixSolver {
 
     public MatrixSolver(int rows, int columns, int numberOfThreads) {
         matrix = new int[rows][columns];
-        barrier = new CyclicBarrier(numberOfThreads, () -> System.out.println("All threads reached the barrier, proceeding to next phase."));
+        barrier = new CyclicBarrier(numberOfThreads,
+                () -> System.out.println("All threads reached the barrier, proceeding to next phase."));
         for (int i = 0; i < numberOfThreads; i++) {
             new Thread(new Worker(i)).start();
         }
@@ -29,6 +30,7 @@ public class MatrixSolver {
                     System.out.println("Thread working on row " + row + ", phase " + phase);
                     processRow(row); // Simulate processing of this row
                     barrier.await(); // Wait for other threads at barrier
+
                 }
             } catch (InterruptedException | BrokenBarrierException e) {
                 Thread.currentThread().interrupt();
@@ -46,7 +48,7 @@ public class MatrixSolver {
     }
 
     public static void main(String[] args) {
-        int rows = 3, columns = 5, threads = 3;
+        int rows = 3, columns = 5, threads = 4;
         new MatrixSolver(rows, columns, threads);
     }
 }
